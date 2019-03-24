@@ -1,0 +1,2 @@
+#define TAPE_LEN 32 * 1024
+#define TAPE_START TAPE_LEN / 2
