@@ -1,5 +1,7 @@
 #pragma once
 
+#define FUCK_INSTRUCTIONS 8
+
 char  binfuck2brainfuck(char  bif);
 char *binfuck_decode   (char *ptr, int len);
 char *binfuck_encode   (char *ptr, int len);

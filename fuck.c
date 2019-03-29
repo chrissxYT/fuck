@@ -1,5 +1,6 @@
 #include "fuck.h"
 #include <stdlib.h>
+#include <string.h>
 
 char binfuck2brainfuck(char bif)
 {
@@ -32,14 +33,48 @@ char *binfuck_encode(char *ptr, int len)
 
 }
 
+static const struct {
+	char *a;
+	char b;
+} af2brf_lookup[FUCK_INSTRUCTIONS] = {
+	{"inc", '+'},
+	{"dec", '-'},
+	{"tsl", '<'},
+	{"tsr", '>'},
+	{"sjp", '['},
+	{"jpb", ']'},
+	{"rac", ','},
+	{"wac", '.'},
+};
+
 char asmfuck2brainfuck(char c1, char c2, char c3)
 {
+	char s[4] = {c1, c2, c3, '\0'};
+	for(int i = 0; i < FUCK_INSTRUCTIONS; i++)
+		if(!strcmp(s, af2brf_lookup[i].a))
+			return af2brf_lookup[i].b;
+	return '\0';
 }
 
 char *asmfuck_decode(char *ptr, int len)
 {
-	char *out = malloc(len);
-	//read until \n, decode
+	char *outraw = malloc(len);
+	char *ororgn = outraw;
+	char *end = ptr + len;
+	ptr--;
+	while(ptr < end)
+	{
+		char c[3];
+		for(int i = 0; i < 3 && *++ptr != '\n'; i++)
+			c[i] = *ptr;
+		char ch = asmfuck2brainfuck(c[0], c[1], c[2]);
+		if(ch) *outraw++ = ch;
+	}
+	size_t outlen = outraw - ororgn;
+	char *out = malloc(outlen);
+	memcpy(out, ororgn, outlen);
+	free(ororgn);
+	out[outlen] = '\0';
 	return out;
 }
 
