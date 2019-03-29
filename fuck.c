@@ -67,6 +67,7 @@ char *asmfuck_decode(char *ptr, int len)
 		char c[3];
 		for(int i = 0; i < 3 && *++ptr != '\n'; i++)
 			c[i] = *ptr;
+		while(*ptr != '\n') ptr++;
 		char ch = asmfuck2brainfuck(c[0], c[1], c[2]);
 		if(ch) *outraw++ = ch;
 	}
