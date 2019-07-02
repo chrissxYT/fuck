@@ -1,7 +1,5 @@
-#!/bin/bash
-if [[ $# -lt 1 ]];
-then
-	echo Not enough args.
-	exit 1
-fi
-cat $1 | bif2brf | brfi
+#!/bin/sh
+[ $# -lt 1 ] && echo "Not enough args." && exit 1
+FILE="/tmp/.this.is.temp.for.bifi"
+cat $@ | bif2brf > "$FILE"
+brfi "$FILE"

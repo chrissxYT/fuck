@@ -36,7 +36,7 @@ char *binfuck_encode(char *ptr, int len)
 static const struct {
 	char *a;
 	char b;
-} af2brf_lookup[FUCK_INSTRUCTIONS] = {
+} af2brf_lookup[8] = {
 	{"inc", '+'},
 	{"dec", '-'},
 	{"tsl", '<'},
@@ -47,10 +47,12 @@ static const struct {
 	{"wac", '.'},
 };
 
+#define lower(c) (c >= 0x41 && c <= 0x5a ? c + 0x20 : c)
+
 char asmfuck2brainfuck(char c1, char c2, char c3)
 {
-	char s[4] = {c1, c2, c3, '\0'};
-	for(int i = 0; i < FUCK_INSTRUCTIONS; i++)
+	char s[4] = {lower(c1), lower(c2), lower(c3), '\0'};
+	for(int i = 0; i < 8; i++)
 		if(!strcmp(s, af2brf_lookup[i].a))
 			return af2brf_lookup[i].b;
 	return '\0';
