@@ -1,5 +1,5 @@
 all:
-	@gcc brfi.c -o brfi
+	@gcc brfi.c -Os -o brfi
 
 clean:
-	@rm brfi
+	@rm -f brfi

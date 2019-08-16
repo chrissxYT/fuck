@@ -2,7 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-char binfuck2brainfuck(char bif)
+typedef char brfop;
+typedef char bifop;
+typedef char *afop;
+typedef struct { brfop *c; size_t len; } brfcode;
+typedef struct { bifop *c; size_t len; } bifcode;
+
+brfop binfuck2brainfuck(bifop bif)
 {
 	switch(bif)
 	{
@@ -18,24 +24,27 @@ char binfuck2brainfuck(char bif)
 	}
 }
 
-char *binfuck_decode(char *ptr, int len)
+brfcode binfuck_decode(char *ptr, int len)
 {
 	char *out = malloc(len * 2);
 	char *c = out;
 	char *end = ptr + len;
-	while(ptr < end)
-		*c++ = *ptr >> 4, *c++ = *ptr++ & 0xf;
+	while(ptr < end) *c++ = *ptr >> 4, *c++ = *ptr++ & 0xf;
 	return out;
 }
 
-char *binfuck_encode(char *ptr, int len)
+bifcode binfuck_encode(brfcode ptr, int len)
 {
-
+        char *out = malloc(len / 2);
+        char *c = out;
+        char *end = ptr + len;
+        while(ptr < end) *c = (*ptr++ << 4), *c++ |= *ptr++;
+        return out;
 }
 
 static const struct {
-	char *a;
-	char b;
+	afop a;
+	brfop b;
 } af2brf_lookup[8] = {
 	{"inc", '+'},
 	{"dec", '-'},
@@ -83,5 +92,4 @@ char *asmfuck_decode(char *ptr, int len)
 
 char *asmfuck_encode(char *ptr, int len)
 {
-
 }
